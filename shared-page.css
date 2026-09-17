@@ -1,0 +1,73 @@
+/* shared-page.css */
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap');
+
+body {
+  font-family: 'TH Sarabun New', 'Sarabun', sans-serif;
+  background-color: #525659;
+  margin: 0;
+  padding: 20px;
+}
+
+/* แก้ไขในคลาส .page */
+.page {
+  background: white;
+  width: 210mm;
+  min-height: 297mm;
+  /* เปลี่ยนขอบบนเป็น 1.5cm เพื่อดันเนื้อหาลงมา */
+  padding: 1.5cm 2cm 2cm 3cm; 
+  margin: 0 auto 20px auto;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  box-sizing: border-box;
+  color: #000;
+}
+
+/* ---------------------------------------------------
+   เปลี่ยนมาใช้ 16pt เพื่อให้ขนาดเท่าฟอนต์ 16 ใน Microsoft Word
+   และใช้ระยะบรรทัด 1.25 ให้สวยงามพอดี (บังคับใช้ทั้งหน้า)
+--------------------------------------------------- */
+.page, .page * {
+  font-size: 16pt !important; 
+  line-height: 1.25 !important; 
+  font-weight: 400; 
+}
+
+/* ยกเว้นตัวที่ควรจะเป็นตัวหนา ให้หนาได้ตามปกติ */
+.page b, .page strong, .page th {
+  font-weight: bold !important;
+}
+
+.page-break {
+  page-break-before: always;
+}
+
+/* แก้ไขในส่วน @media print */
+@media print {
+  @page {
+    size: A4;
+    /* เปลี่ยนขอบบนตอนพิมพ์เป็น 1.5cm ให้ตรงกัน */
+    margin: 1.5cm 2cm 2cm 3cm; 
+  }
+  
+  body { 
+    background: white; 
+    padding: 0; 
+    margin: 0;
+  }
+  
+  .no-print { 
+    display: none !important; 
+  }
+  
+  .page { 
+    box-shadow: none !important; 
+    margin: 0 !important; 
+    padding: 0 !important; 
+    width: 100% !important; 
+    max-width: 100% !important;
+    min-height: auto; 
+  }
+
+  .page-break {
+    page-break-before: always !important;
+  }
+}

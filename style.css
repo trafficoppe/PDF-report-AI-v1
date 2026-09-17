@@ -1,0 +1,173 @@
+/* style.css */
+.toolbar {
+  background: white;
+  padding: 15px 20px;
+  border-radius: 8px;
+  max-width: 210mm;
+  margin: 0 auto 20px auto;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.toolbar h3 { 
+  margin-top: 0; 
+}
+
+.print-btn {
+  background-color: #4CAF50; 
+  color: white; 
+  border: none; 
+  padding: 10px 15px;
+  border-radius: 4px; 
+  cursor: pointer; 
+  font-family: 'TH Sarabun New', 'Sarabun', sans-serif; 
+  font-size: 16pt; 
+  margin-left: 10px;
+}
+
+.print-btn:hover { 
+  background-color: #45a049; 
+}
+
+/* บีบระยะบรรทัดตรงส่วนของที่อยู่ด้านบนให้ชิดขึ้น */
+.right-header {
+  font-weight: normal; 
+  line-height: 1.1 !important; 
+}
+
+/* ระยะย่อหน้าเนื้อหา */
+.content { 
+  text-indent: 2.5cm;
+  text-align: justify; 
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  margin-bottom: 5px; 
+}
+
+.incident-summary { 
+  margin-left: 2.5cm;
+  margin-bottom: 10px; 
+}
+
+.incident-summary p { 
+  margin: 3px 0; 
+}
+
+.incident-detail-item {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  margin-bottom: 25px;
+  page-break-inside: avoid; 
+  break-inside: avoid;
+}
+
+.incident-detail-left {
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  display: block;
+}
+
+/* แก้ไขส่วนนี้ใน style.css */
+.incident-detail-left img {
+  width: 200px !important;   /* กำหนดความกว้าง (ปรับตัวเลขได้ตามต้องการ) */
+  height: 200px !important;  /* กำหนดความสูงให้เท่ากับความกว้างเป๊ะๆ */
+  object-fit: cover !important; /* ครอบตัดรูปให้เต็มกรอบสี่เหลี่ยมโดยไม่ทำให้ภาพเบี้ยวยืด */
+  border: 1px solid #ddd;    /* (ใส่หรือไม่ใส่ก็ได้) เพิ่มขอบบางๆ ให้รูปดูเรียบร้อยขึ้น */
+  display: block;
+  margin-top: 0;
+}
+
+.incident-detail-right {
+  flex: 1;
+  box-sizing: border-box;
+  text-align: justify;
+}
+
+/* ตาราง */
+.shift-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* แก้ไขส่วนนี้ในหน้าจอปกติ */
+.shift-table th, .shift-table td {
+  border: 1px solid #000;
+  /* เพิ่มช่องว่าง บน-ล่าง เป็น 6px และ ซ้าย-ขวา เป็น 8px ให้ดูโปร่งขึ้น */
+  padding: 6px 8px !important; 
+  vertical-align: middle;
+  /* ปรับระยะบรรทัดกลับเป็น 1.25 ให้ตัวหนังสือมีพื้นที่หายใจ */
+  line-height: 1.25 !important;   
+}
+
+/* แก้ไขส่วนนี้ใน style.css */
+.shift-table th { 
+  text-align: center !important; /* บังคับให้อยู่กึ่งกลางเสมอ */
+  background-color: #f9f9f9;
+}
+
+.shift-table tbody tr:hover td {
+  background-color: #fce4e4; 
+}
+
+/* =========================================
+   ส่วนจัดการลายเซ็นท้ายรายงาน
+========================================= */
+.closing-section, .closing-section p {
+  /* บังคับฟอนต์ ขนาด 16pt และสีดำ ให้เหมือนเนื้อหาด้านบนเป๊ะๆ */
+  font-family: 'TH Sarabun New', 'Sarabun', sans-serif !important;
+  font-size: 16pt !important;
+  color: #000 !important;
+}
+
+.closing-section {
+  margin-top: 30px;
+  /* ป้องกันไม่ให้ส่วนลายเซ็นถูกตัดขาดครึ่งหน้าเวลาพิมพ์ */
+  page-break-inside: avoid; 
+}
+
+.closing-text {
+  /* ย่อหน้าให้เท่ากับเนื้อหาส่วนอื่นๆ */
+  text-indent: 2.5cm; 
+  margin-bottom: 50px;
+  line-height: 1.25 !important;
+}
+
+.signature-area {
+  /* ดันบล็อกลายเซ็นไปอยู่กึ่งกลางของหน้ากระดาษฝั่งขวา */
+  margin-left: 50%; 
+  display: flex;
+  flex-direction: column;
+  gap: 50px; 
+}
+
+.signature-block p {
+  text-align: center;
+  margin: 0; 
+  /* บีบระยะบรรทัดนิดหน่อยให้ชื่อและตำแหน่งอยู่ชิดกันสวยงาม */
+  line-height: 1.2 !important; 
+}
+
+/* ---------------------------------------------------
+   ส่วนนี้อยู่ด้านล่างสุดของไฟล์ style.css 
+   คือคำสั่งสำหรับควบคุมตอนเซฟเป็น PDF หรือสั่งพิมพ์
+--------------------------------------------------- */
+@media print {
+  .shift-table {
+    width: 100% !important;
+    page-break-inside: auto;
+  }
+  
+  /* แก้ไขตรงนี้ให้ตัวเลขเท่ากับบนหน้าจอเป๊ะๆ ครับ */
+  .shift-table th, .shift-table td {
+    padding: 3px 5px !important;  /* ขยายช่องว่าง บน-ล่าง 6px, ซ้าย-ขวา 8px */
+    line-height: 1.25 !important; /* ระยะบรรทัดมาตรฐาน */
+  }
+  
+  .shift-table tr {
+    page-break-inside: avoid; 
+  }
+  
+  .shift-table thead {
+    display: table-header-group; 
+  }
+}

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>รายงานผลการปฏิบัติงานและเหตุการณ์ทั่วไป</title>
+  
+  <link rel="stylesheet" href="shared-page.css">
+  <link rel="stylesheet" href="style.css">
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+  <!-- ต้องมีบรรทัดนี้สำหรับวาดกราฟครับ -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="no-print toolbar">
+    <h3>เครื่องมือออกรายงาน (ดึงข้อมูล 2 ชีท)</h3>
+    <label for="datePicker">เลือกวันที่รายงาน: </label>
+    <input type="date" id="datePicker" onchange="updateReport()" style="font-family: 'Sarabun'; font-size: 15px; padding: 5px 10px; border-radius: 4px; border: 1px solid #ccc; cursor: pointer;">
+    <button onclick="window.print()" class="print-btn">🖨️ พิมพ์ / บันทึกเป็น PDF</button>
+  </div>
+
+  <!-- ================= แผ่นที่ 1 ================= -->
+  <div class="page">
+    
+    <div style="text-align: center;">
+      <img src="logo-MU.png" alt="โลโก้มหาวิทยาลัยมหิดล" style="width: 2.5cm; height: auto;">
+    </div>
+
+    <div class="right-header" style="text-align: right; margin-top: -25px; line-height: 1.8;">
+      งานจราจรและความปลอดภัย<br>
+      กองกายภาพและสิ่งแวดล้อม<br>
+      มหาวิทยาลัยมหิดล ศาลายา<br>
+      โทร. 02-441-4400 ต่อ 1253
+    </div>
+
+    <div style="font-weight: normal; line-height: 1.25;">
+      ที่ <br>
+      วันที่ <br>
+      เรื่อง &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="docSubject">รายงานเหตุการณ์</span>
+    </div>
+
+    <div style="height: 10px;"></div>
+
+    <div style="font-weight: normal; line-height: 1.25;">
+      เรียน &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ผู้อำนวยการกองกายภาพและสิ่งแวดล้อม
+    </div>
+
+    <div style="height: 10px;"></div>
+
+    <div class="content" style="margin-top: 0 !important; padding-top: 0 !important;">
+      ด้วยงานจราจรและความปลอดภัย กองกายภาพและสิ่งแวดล้อม ใคร่ขอสรุปรายงานผลการปฏิบัติงานและเหตุการณ์ทั่วไปที่เกิดขึ้นภายในพื้นที่ความรับผิดชอบ ประจำวันที่ <span id="reportDateText">...</span> ระหว่างเวลา 07.00 - 07.00 น. ของวันรุ่งขึ้น <b id="incidentIntroText">...</b>
+    </div>
+    
+    <div class="incident-summary" id="incidentSummaryList">
+    </div>
+
+    <div style="font-weight: bold; margin-bottom: 10px; font-size: 16pt;">ตารางรายงานจำนวนสายตรวจประจำผลัด</div>
+    <table class="shift-table" style="font-size: 16pt !important;">
+      <thead>
+        <tr>
+          <th style="width: 30%; font-size: 16pt !important;">ผลัดการปฏิบัติงาน</th>
+          <th style="width: 30%; font-size: 16pt !important;">หน้าที่</th>
+          <th style="width: 40%; text-align: left; padding-left: 15px; font-size: 16pt !important;">รายชื่อผู้ปฏิบัติงาน</th>
+        </tr>
+      </thead>
+      <tbody id="shiftTableBody">
+      </tbody>
+    </table>
+
+    <!-- ==============================================================
+         ย้ายตาราง รปภ. เอกชน มาไว้ตรงนี้ (ต่อจากตาราง รปภ. หลวง)
+         ============================================================== -->
+    <div class="guard-summary-section" style="margin-top: 30px; margin-bottom: 20px; page-break-inside: avoid;">
+      <div style="font-weight: bold; font-size: 16pt; margin-bottom: 10px;">ตารางแสดงจำนวน รปภ.เอกชน ประจำวัน</div>
+      
+      <table class="shift-table" style="width: 100%; border-collapse: collapse; text-align: center; font-size: 16pt !important;">
+        <thead>
+          <tr>
+            <th style="width: 25%; font-size: 16pt !important;">ส่วนงาน</th>
+            <th style="width: 15%; font-size: 16pt !important;">ผลัดกลางวัน</th>
+            <th style="width: 15%; font-size: 16pt !important;">ผลัดกลางคืน</th>
+            <th style="width: 15%; font-size: 16pt !important;">รวม</th>
+            <th style="width: 30%; font-size: 16pt !important;">สถานะ</th>
+          </tr>
+        </thead>
+        <tbody id="guardTableBody">
+          <!-- ใส่ตัวเลขจริงจากชีทที่คุณระบุ -->
+          <tr>
+            <td style="text-align: left; font-size: 16pt !important;">ส่วนกลาง</td>
+            <td style="font-size: 16pt !important;">32</td>
+            <td style="font-size: 16pt !important;">24</td>
+            <td style="font-size: 16pt !important;">56</td>
+            <td style="font-size: 16pt !important;">ครบ</td>
+          </tr>
+          <tr>
+            <td style="text-align: left; font-size: 16pt !important;">ศูนย์การเรียนรู้มหิดล</td>
+            <td style="font-size: 16pt !important;">11</td>
+            <td style="font-size: 16pt !important;">8</td>
+            <td style="font-size: 16pt !important;">19</td>
+            <td style="font-size: 16pt !important;">ครบ</td>
+          </tr>
+          <tr>
+            <td style="text-align: left; font-size: 16pt !important;">มหิดลสิทธาคาร</td>
+            <td style="font-size: 16pt !important;">10</td>
+            <td style="font-size: 16pt !important;">5</td>
+            <td style="font-size: 16pt !important;">15</td>
+            <td style="font-size: 16pt !important;">ไม่ครบ</td> <!-- เปลี่ยนตรงนี้ตามข้อมูลจริงตอนดึงข้อมูล -->
+          </tr>
+          <tr>
+            <td style="text-align: left; font-size: 16pt !important;">อาคารสิริวิทยา</td>
+            <td style="font-size: 16pt !important;">7</td>
+            <td style="font-size: 16pt !important;">3</td>
+            <td style="font-size: 16pt !important;">10</td>
+            <td style="font-size: 16pt !important;">ครบ</td>
+          </tr>
+          <tr>
+            <td style="text-align: left; font-size: 16pt !important;">สิรีฯ</td>
+            <td style="font-size: 16pt !important;">10</td>
+            <td style="font-size: 16pt !important;">4</td>
+            <td style="font-size: 16pt !important;">14</td>
+            <td style="font-size: 16pt !important;">ครบ</td>
+          </tr>
+          <tr>
+            <td style="text-align: left; font-size: 16pt !important;">หอพักนักศึกษา</td>
+            <td style="font-size: 16pt !important;">13</td>
+            <td style="font-size: 16pt !important;">11</td>
+            <td style="font-size: 16pt !important;">24</td>
+            <td style="font-size: 16pt !important;">ครบ</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ==============================================================
+         กราฟรายงานข้อมูลจราจร (หัวข้อชิดซ้าย กรอบดำ)
+         ============================================================== -->
+    <div class="traffic-summary-section" style="margin-top: 15px; margin-bottom: 15px;">
+      
+      <!-- หัวข้อที่ 1: ชิดซ้าย -->
+      <div style="font-weight: bold; font-size: 16pt; margin-bottom: 5px; text-align: left;">กราฟแสดงจำนวนรถเข้า</div>
+      <div style="width: 100%; max-width: 700px; box-sizing: border-box; height: 220px; margin: 0 auto 20px auto; background: #fff; padding: 10px 15px; border: 1px solid #000; border-radius: 0; page-break-inside: avoid;">
+        <canvas id="vehicleChart"></canvas>
+      </div>
+
+      <!-- หัวข้อที่ 2: ชิดซ้าย -->
+      <div style="font-weight: bold; font-size: 16pt; margin-bottom: 5px; text-align: left;">กราฟแสดงจำนวนผู้ไม่สวมหมวกนิรภัย</div>
+      <div style="width: 100%; max-width: 700px; box-sizing: border-box; height: 220px; margin: 0 auto; background: #fff; padding: 10px 15px; border: 1px solid #000; border-radius: 0; page-break-inside: avoid;">
+        <canvas id="helmetChart"></canvas>
+      </div>
+      
+    </div>
+
+    <!-- ================= รายละเอียดเหตุการณ์ (ดันไปขึ้นหน้า 3 เสมอ) ================= -->
+    <div id="incidentDetailSection" style="display: none; page-break-before: always; padding-top: 20px;">
+      <div style="font-weight: bold; font-size: 16pt; margin-bottom: 20px;">
+        รายละเอียดรายงานเหตุการณ์
+      </div>
+      <div id="incidentDetailList"></div>
+    </div>
+
+    <!-- ส่วนท้ายของรายงาน (ลายเซ็นจะแสดงเสมอ) -->
+    <div class="closing-section">
+      <p class="closing-text">จึงเรียนมาเพื่อโปรดทราบ</p>
+      
+      <div class="signature-area">
+        <div class="signature-block">
+          <p>(นายยุทธภูมิ ญานเพิ่ม)</p>
+          <p>หัวหน้างานจราจรและความปลอดภัย</p>
+        </div>
+        
+        <div class="signature-block">
+          <p>(นายพุฒิเศรษฐ์ ตันติเมฆิน)</p>
+          <p>ผู้อำนวยการกองกายภาพและสิ่งแวดล้อม</p>
+        </div>
+      </div>
+    </div>
+
+  </div> <!-- สิ้นสุดแผ่นที่ 1 -->
+
+  <!-- ================= แผ่นที่ 2 (รายละเอียดเหตุการณ์) ================= -->
+  <div class="page page-break" id="page2" style="display: none;">
+    <div style="font-weight: bold; font-size: 16pt; margin-bottom: 20px;">
+      รายละเอียดรายงานเหตุการณ์
+    </div>
+    <div id="incidentDetailList">
+    </div>
+
+    <!-- ส่วนท้ายของรายงาน (ลายเซ็น) -->
+    <div class="closing-section">
+      <p class="closing-text">จึงเรียนมาเพื่อโปรดทราบ</p>
+      
+      <div class="signature-area">
+        <div class="signature-block">
+          <p>(นายยุทธภูมิ ญานเพิ่ม)</p>
+          <p>หัวหน้างานจราจรและความปลอดภัย</p>
+        </div>
+        
+        <div class="signature-block">
+          <p>(นายพุฒิเศรษฐ์ ตันติเมฆิน)</p>
+          <p>ผู้อำนวยการกองกายภาพและสิ่งแวดล้อม</p>
+        </div>
+      </div>
+    </div>
+
+  </div> <!-- สิ้นสุดแผ่นที่ 2 -->
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
