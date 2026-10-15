@@ -40,12 +40,11 @@ body {
   page-break-before: always;
 }
 
-/* แก้ไขในส่วน @media print */
 @media print {
   @page {
     size: A4;
-    /* เปลี่ยนขอบบนตอนพิมพ์เป็น 1.5cm ให้ตรงกัน */
-    margin: 1.5cm 2cm 2cm 3cm; 
+    /* ขอบ: บน 1.5cm, ขวา 2cm, ล่าง 0.5cm (เดิม 2cm), ซ้าย 3cm */
+    margin: 1.5cm 2cm 0.5cm 3cm; 
   }
   
   body { 

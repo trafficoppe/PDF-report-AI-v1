@@ -154,13 +154,12 @@
 @media print {
   .shift-table {
     width: 100% !important;
-    page-break-inside: auto;
+    page-break-inside: avoid; /* เปลี่ยนจาก auto เป็น avoid เพื่อบังคับไม่ให้ตารางขาดครึ่ง */
   }
   
-  /* แก้ไขตรงนี้ให้ตัวเลขเท่ากับบนหน้าจอเป๊ะๆ ครับ */
   .shift-table th, .shift-table td {
-    padding: 3px 5px !important;  /* ขยายช่องว่าง บน-ล่าง 6px, ซ้าย-ขวา 8px */
-    line-height: 1.25 !important; /* ระยะบรรทัดมาตรฐาน */
+    padding: 2px 4px !important;  /* ลดช่องว่างในช่องตารางให้แคบลง */
+    line-height: 1.15 !important; /* บีบระยะบรรทัดเฉพาะในตารางให้กระชับขึ้น */
   }
   
   .shift-table tr {
